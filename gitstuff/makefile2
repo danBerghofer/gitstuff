@@ -1,20 +1,20 @@
 
 
 all: test dist clean
-dist: dan.c ma.c makefile2 libcma.so
-	tar -cf program.tar dan.c ma.c makefile2 libcma.so
+dist: dan.c cma.c ma.c makefile2 libcma.so cma.h
+	tar -cf program.tar dan.c ma.c cma.c cma.h makefile2 libcma.so
 test: dan ma
 	./ma
 	./dan 100
 dan: dan.o libcma.so
 	gcc dan.o libcma.so -o dan
-dan.o:
+dan.o: 
 ma: ma.o libcma.so
 	gcc ma.o libcma.so -o ma
 
 ma.o:
 libcma.so: cma.o cma.h
 	ar r libcma.so cma.o
-cma.o: cma.h
+cma.o: cma.h debug.h
 clean: 
 	rm *.o
