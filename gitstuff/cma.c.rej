@@ -1,0 +1,26 @@
+--- cma.c	2010-08-18 19:03:16.000000000 -0700
++++ cma.moredebug.c	2010-10-26 23:22:09.000000000 -0700
+@@ -43,7 +44,7 @@
+ static void class_printList(MNode list) {
+   if (!list)
+     return;
+-  printf("Node %p, %ld\n",list,list->size);
++  printf("Node %p, %ud\n",list,list->size);
+   class_printList(list->next);
+ }
+ 
+@@ -96,11 +99,14 @@
+ 	
+ 	//we need room for a new header
+ 	if ( (orgsz-size-sizeof(struct MemNode)) > 0 ) {
++		DEBUG("Node split: %ud => %ud,%ud",org->size,size,orgsz-sizeof(struct MemNode)-size);
+ 		org->size = size;
+ 		extra = (MNode)((void*)org+size+sizeof(struct MemNode));
+ 		extra->next = 0;
+ 		extra->size = orgsz-sizeof(struct MemNode)-size;
+ 	}
++	else
++		DEBUG("Node does not have enough size to split:%ud %ud",org->size,size);
+ 	
+ 	return extra;
+ }
